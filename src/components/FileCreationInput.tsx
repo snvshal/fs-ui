@@ -43,7 +43,7 @@ export const FileCreationInput: React.FC<FileCreationInputProps> = ({
   return (
     <div
       className="flex items-center gap-2 border-l border-neutral-700 bg-neutral-800/50 py-1 pr-2"
-      style={{ paddingLeft: `${depth * 12 + 8}px`, marginLeft: "1px" }} // Align with tree
+      style={{ paddingLeft: `${depth * 12 + 24}px`, marginLeft: "1px" }} // Align with tree
     >
       <span className="text-neutral-400">
         {type === "file" ? <File size={16} /> : <Folder size={16} />}
