@@ -2,7 +2,7 @@
 
 A modern, browser-based file explorer and code editor built with React, TypeScript, and the File System Access API. This application allows users to interact directly with their local file system, providing a seamless development experience within the browser.
 
-![Application Screenshot](/app.png)
+![Application Screenshot](./public/app.png)
 
 ## Features
 
