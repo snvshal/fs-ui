@@ -23,6 +23,11 @@ body {
     @apply bg-transparent;
   }
 
+  .sidebar {
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+  }
+
   /* Firefox */
   * {
     scrollbar-width: thin;

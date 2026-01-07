@@ -2,7 +2,7 @@
 
 A modern, browser-based file explorer and code editor built with React, TypeScript, and the File System Access API. This application allows users to interact directly with their local file system, providing a seamless development experience within the browser.
 
-![Application Screenshot](image-placeholder)
+![Application Screenshot](/app.png)
 
 ## Features
 
@@ -28,7 +28,7 @@ A modern, browser-based file explorer and code editor built with React, TypeScri
 ### Prerequisites
 
 - Node.js (version 16 or higher)
-- npm or yarn
+- Bun (latest version)
 
 ### Installation
 
@@ -46,7 +46,7 @@ A modern, browser-based file explorer and code editor built with React, TypeScri
 
 3. Install dependencies:
    ```bash
-   npm install
+   bun install
    ```
 
 ### Running the Application
@@ -54,7 +54,7 @@ A modern, browser-based file explorer and code editor built with React, TypeScri
 Start the development server:
 
 ```bash
-npm run dev
+bun run dev
 ```
 
 The application will be available at `http://localhost:5173`.
@@ -64,7 +64,7 @@ The application will be available at `http://localhost:5173`.
 To create a production build:
 
 ```bash
-npm run build
+bun run build
 ```
 
 The artifacts will be generated in the `dist` directory.
