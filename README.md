@@ -33,11 +33,13 @@ A modern, browser-based file explorer and code editor built with React, TypeScri
 ### Installation
 
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/snvshal/fs-ui.git
    ```
 
 2. Navigate to the project directory:
+
    ```bash
    cd fs-ui
    ```

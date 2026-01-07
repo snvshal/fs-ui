@@ -11,6 +11,11 @@ export interface FileSystemState {
   currentPath: string[];
   entries: FileSystemEntry[]; // Entries in current view
   selectedFile: FileSystemEntry | null;
+  selectedDirectory: FileSystemEntry | null; // Track last clicked folder
+  creationState: {
+    type: "file" | "directory";
+    parent: FileSystemEntry | null;
+  } | null; // Track creation intent
   isLoading: boolean;
   error: string | null;
 }
@@ -23,6 +28,17 @@ export interface FileSystemContextType extends FileSystemState {
   closeFile: () => void;
   readFile: (handle: FileSystemFileHandle) => Promise<string | File>;
   saveFile: (handle: FileSystemFileHandle, content: string) => Promise<void>;
-  createEntry: (name: string, kind: "file" | "directory") => Promise<void>;
+  createEntry: (
+    name: string,
+    kind: "file" | "directory",
+    parentHandle?: FileSystemDirectoryHandle,
+  ) => Promise<void>;
   deleteEntry: (handle: FileSystemHandle) => Promise<void>;
+  setSelectedDirectory: (entry: FileSystemEntry | null) => void;
+  setCreationState: (
+    state: {
+      type: "file" | "directory";
+      parent: FileSystemEntry | null;
+    } | null,
+  ) => void;
 }

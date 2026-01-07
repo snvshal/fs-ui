@@ -12,11 +12,14 @@ export const Sidebar: React.FC = () => {
       <div className="z-10 flex h-10 items-center justify-between border-b border-neutral-800 bg-neutral-900 p-2 text-xs font-bold tracking-wider text-neutral-500">
         <button
           onClick={openDirectory}
-          className="flex items-center gap-2 text-neutral-500 transition-opacity hover:text-neutral-300 uppercase"
+          className="flex items-center gap-2 uppercase text-neutral-500 transition-opacity hover:text-neutral-300"
           title="Switch Folder"
         >
           <span>File Explorer</span>
-          <FolderCog size={16} className="opacity-0 hover:text-neutral-300 group-hover:opacity-100" />
+          <FolderCog
+            size={16}
+            className="opacity-0 hover:text-neutral-300 group-hover:opacity-100"
+          />
         </button>
       </div>
 

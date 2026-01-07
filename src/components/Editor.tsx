@@ -42,8 +42,6 @@ export const FileEditor: React.FC = () => {
     setPreviewMode(false); // Reset preview mode on file change
   }, [selectedFile, readFile]);
 
-
-
   // Ref for content to access latest value in event listener without re-binding
   const contentRef = useRef(content);
   useEffect(() => {
@@ -58,18 +56,18 @@ export const FileEditor: React.FC = () => {
 
   useEffect(() => {
     const handleGlobalSave = async (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+      if ((e.ctrlKey || e.metaKey) && e.key === "s") {
         e.preventDefault();
         handleSave();
       }
     };
 
-    window.addEventListener('keydown', handleGlobalSave);
-    return () => window.removeEventListener('keydown', handleGlobalSave);
+    window.addEventListener("keydown", handleGlobalSave);
+    return () => window.removeEventListener("keydown", handleGlobalSave);
   }, [saveFile]);
 
   const handleSave = async () => {
-    // Use refs to ensure we always have the latest state, 
+    // Use refs to ensure we always have the latest state,
     // even if called from a stale closure (like Monaco command)
     const currentFile = selectedFileRef.current;
     const currentContent = contentRef.current;
@@ -77,7 +75,10 @@ export const FileEditor: React.FC = () => {
     if (!currentFile) return;
     try {
       setIsSaving(true);
-      await saveFile(currentFile.handle as FileSystemFileHandle, currentContent);
+      await saveFile(
+        currentFile.handle as FileSystemFileHandle,
+        currentContent,
+      );
       setOriginalContent(currentContent);
     } catch (err) {
       console.error("Failed to save", err);
@@ -214,6 +215,16 @@ export const FileEditor: React.FC = () => {
         </div>
       ) : (
         <div className="relative flex-1 overflow-hidden">
+          {isSaving && (
+            <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+              <div className="flex flex-col items-center gap-2">
+                <div className="h-8 w-8 animate-spin rounded-full border-4 border-blue-500 border-t-transparent"></div>
+                <span className="text-sm font-medium text-white">
+                  Saving...
+                </span>
+              </div>
+            </div>
+          )}
           {previewMode && isMarkdown ? (
             <div className="prose prose-blue prose-invert h-[calc(100%-40px)] w-full max-w-none overflow-auto p-8 text-neutral-300">
               <ReactMarkdown remarkPlugins={[remarkGfm]}>

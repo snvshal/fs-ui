@@ -25,6 +25,8 @@ export const FileSystemProvider: React.FC<{ children: React.ReactNode }> = ({
     currentPath: [],
     entries: [],
     selectedFile: null,
+    selectedDirectory: null, // Initial state
+    creationState: null, // Initial state
     isLoading: false,
     error: null,
   });
@@ -57,6 +59,8 @@ export const FileSystemProvider: React.FC<{ children: React.ReactNode }> = ({
         currentPath: [],
         entries,
         selectedFile: null,
+        selectedDirectory: null,
+        creationState: null,
         isLoading: false,
         error: null,
       });
@@ -87,6 +91,8 @@ export const FileSystemProvider: React.FC<{ children: React.ReactNode }> = ({
           currentPath: path,
           entries,
           selectedFile: null,
+          selectedDirectory: null, // Should we reset this? Probably yes, or keep it if it's within the path? Let's reset for simplicity.
+          creationState: null,
           isLoading: false,
         }));
       } catch (err: any) {
@@ -153,31 +159,45 @@ export const FileSystemProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
-  const createEntry = async (name: string, kind: "file" | "directory") => {
+  const createEntry = async (
+    name: string,
+    kind: "file" | "directory",
+    parentHandle?: FileSystemDirectoryHandle,
+  ) => {
     if (!state.rootHandle) return;
 
     try {
-      let currentDir = state.rootHandle;
-      for (const part of state.currentPath) {
-        currentDir = await currentDir.getDirectoryHandle(part);
+      let targetDir = parentHandle;
+
+      if (!targetDir) {
+        // Fallback to current path if no handle provided
+        targetDir = state.rootHandle;
+        for (const part of state.currentPath) {
+          targetDir = await targetDir.getDirectoryHandle(part);
+        }
       }
 
-      if (await verifyPermission(currentDir, true)) {
+      if (await verifyPermission(targetDir, true)) {
         if (kind === "file") {
-          await currentDir.getFileHandle(name, { create: true });
+          await targetDir.getFileHandle(name, { create: true });
         } else {
-          await currentDir.getDirectoryHandle(name, { create: true });
+          await targetDir.getDirectoryHandle(name, { create: true });
         }
-        // Refresh
-        const entries = await getDirectoryEntries(
-          currentDir,
-          state.currentPath,
-        );
-        setState((prev) => ({ ...prev, entries }));
+
+        // Refresh grid ONLY if we modified the current directory
+        // We can't easily check identity of handles, but if no parentHandle was passed, we definitely used current path.
+        if (!parentHandle) {
+          const entries = await getDirectoryEntries(
+            targetDir,
+            state.currentPath,
+          );
+          setState((prev) => ({ ...prev, entries }));
+        }
       }
     } catch (err: any) {
       console.error("Create failed", err);
       setState((prev) => ({ ...prev, error: `Create failed: ${err.message}` }));
+      throw err; // Re-throw so UI knows it failed/succeeded
     }
   };
 
@@ -263,6 +283,24 @@ export const FileSystemProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
+  // Track last clicked folder
+  // Note: We use the full entry object to track selection. Comparison should be done by path string.
+  const setSelectedDirectory = useCallback((entry: FileSystemEntry | null) => {
+    setState((prev) => ({ ...prev, selectedDirectory: entry }));
+  }, []);
+
+  const setCreationState = useCallback(
+    (
+      state: {
+        type: "file" | "directory";
+        parent: FileSystemEntry | null;
+      } | null,
+    ) => {
+      setState((prev) => ({ ...prev, creationState: state }));
+    },
+    [],
+  );
+
   return (
     <FileSystemContext.Provider
       value={{
@@ -278,6 +316,8 @@ export const FileSystemProvider: React.FC<{ children: React.ReactNode }> = ({
         deleteEntry,
         // @ts-ignore
         renameEntry,
+        setSelectedDirectory,
+        setCreationState,
       }}
     >
       {children}
