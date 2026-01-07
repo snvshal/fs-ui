@@ -70,11 +70,14 @@ const MainView = () => {
 function App() {
   return (
     <>
-      <div className="md:hidden fixed inset-0 z-50 flex flex-col items-center justify-center bg-neutral-900 p-6 text-center text-neutral-400">
-        <h2 className="text-xl font-bold text-white mb-2">Desktop Only</h2>
-        <p>This application mimics a desktop environment and is not available on mobile devices and small screens.</p>
+      <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-neutral-900 p-6 text-center text-neutral-400 md:hidden">
+        <h2 className="mb-2 text-xl font-bold text-white">Desktop Only</h2>
+        <p>
+          This application mimics a desktop environment and is not available on
+          mobile devices and small screens.
+        </p>
       </div>
-      <div className="hidden md:block h-full">
+      <div className="hidden h-full md:block">
         <FileSystemProvider>
           <Layout>
             <Breadcrumbs />

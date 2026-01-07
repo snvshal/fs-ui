@@ -4,17 +4,25 @@ import { Folder, File, ChevronRight, ChevronDown } from "lucide-react";
 import { FileSystemEntry } from "../types/file-system";
 import clsx from "clsx";
 
-const FileTreeItem: React.FC<{ entry: FileSystemEntry; depth: number, parentEntry: FileSystemEntry | null }> = ({
-  entry,
-  depth,
-  parentEntry
-}) => {
-  const { openFile, createEntry, selectedDirectory, setSelectedDirectory, creationState, setCreationState } = useFileSystem();
+const FileTreeItem: React.FC<{
+  entry: FileSystemEntry;
+  depth: number;
+  parentEntry: FileSystemEntry | null;
+}> = ({ entry, depth, parentEntry }) => {
+  const {
+    openFile,
+    createEntry,
+    selectedDirectory,
+    setSelectedDirectory,
+    creationState,
+    setCreationState,
+  } = useFileSystem();
   const [isOpen, setIsOpen] = React.useState(false);
   const [refreshTrigger, setRefreshTrigger] = React.useState(0);
 
   // Check if we are the parent of the new item being created
-  const isCreatingChild = creationState?.parent?.path.join('/') === entry.path.join('/');
+  const isCreatingChild =
+    creationState?.parent?.path.join("/") === entry.path.join("/");
 
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -133,7 +141,12 @@ const FileTreeLevel: React.FC<{
   return (
     <div>
       {entries.map((entry) => (
-        <FileTreeItem key={entry.name} entry={entry} depth={depth} parentEntry={parentEntry} />
+        <FileTreeItem
+          key={entry.name}
+          entry={entry}
+          depth={depth}
+          parentEntry={parentEntry}
+        />
       ))}
     </div>
   );
