@@ -1,21 +1,8 @@
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  useCallback,
-} from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { get, set } from "idb-keyval";
-import {
-  FileSystemContextType,
-  FileSystemEntry,
-  FileSystemState,
-} from "../types/file-system";
+import { FileSystemEntry, FileSystemState } from "../types/file-system";
 import { getDirectoryEntries, verifyPermission } from "../utils/file-system";
-
-const FileSystemContext = createContext<FileSystemContextType | undefined>(
-  undefined,
-);
+import { FileSystemContext } from "../hooks/useFileSystem";
 
 export const FileSystemProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -323,12 +310,4 @@ export const FileSystemProvider: React.FC<{ children: React.ReactNode }> = ({
       {children}
     </FileSystemContext.Provider>
   );
-};
-
-export const useFileSystem = () => {
-  const context = useContext(FileSystemContext);
-  if (context === undefined) {
-    throw new Error("useFileSystem must be used within a FileSystemProvider");
-  }
-  return context;
 };

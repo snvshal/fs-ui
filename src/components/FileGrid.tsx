@@ -11,12 +11,7 @@ import {
   Terminal,
 } from "lucide-react";
 import { FileSystemEntry } from "../types/file-system";
-import clsx, { ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
-
-export function tc(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
+import { tc } from "../utils/tc";
 
 export const FileIcon: React.FC<{
   name: string;
@@ -73,7 +68,6 @@ export const FileIcon: React.FC<{
     case "php":
     case "swift":
     case "kt":
-    case "rs":
       return <Code size={size} className={tc("text-yellow-400", className)} />;
     case "md":
     case "txt":
