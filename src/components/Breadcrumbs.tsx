@@ -19,13 +19,13 @@ export const Breadcrumbs: React.FC = () => {
   if (!rootHandle) return null;
 
   return (
-    <div className="flex h-10 items-center border-b border-neutral-800 bg-neutral-900 p-3 text-sm text-neutral-400">
+    <div className="flex h-10 items-center border-b border-neutral-800 bg-neutral-900 px-4 py-3 text-sm text-neutral-400">
       <button
         onClick={handleHome}
         className="flex items-center transition-colors hover:text-neutral-200"
         title={rootHandle.name}
       >
-        <Home size={16} className="mr-1" />
+        <Home size={16} className="mr-2" />
         <span className="font-semibold">{rootHandle.name}</span>
       </button>
 

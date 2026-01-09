@@ -1,8 +1,9 @@
 import React from "react";
 import { useFileSystem } from "../hooks/useFileSystem";
-import { Folder, File, ChevronRight, ChevronDown } from "lucide-react";
+import { Folder, ChevronRight, ChevronDown } from "lucide-react";
 import { FileSystemEntry } from "../types/file-system";
 import clsx from "clsx";
+import { FileIcon } from "./FileGrid";
 
 const FileTreeItem: React.FC<{
   entry: FileSystemEntry;
@@ -83,7 +84,12 @@ const FileTreeItem: React.FC<{
           {isDirectory ? (
             <Folder size={16} />
           ) : (
-            <File size={16} className="text-neutral-400" />
+            <FileIcon
+              name={entry.name}
+              kind={entry.kind}
+              size={16}
+              className="text-neutral-400"
+            />
           )}
         </span>
         <span className="flex-1 truncate">{entry.name}</span>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useFileSystem } from "../hooks/useFileSystem";
+import { FileIcon } from "./FileGrid";
 import { X } from "lucide-react";
 
 export const Preview: React.FC = () => {
@@ -16,7 +17,12 @@ export const Preview: React.FC = () => {
         const file = await readFile(
           selectedFile.handle as FileSystemFileHandle,
         );
-        if (file instanceof File) {
+        if (
+          file &&
+          typeof file === "object" &&
+          "size" in file &&
+          "type" in file
+        ) {
           // Create object URL
           const url = URL.createObjectURL(file);
           setContentUrl(url);
@@ -47,14 +53,23 @@ export const Preview: React.FC = () => {
     return type?.startsWith("video/") || /\.(mp4|webm|ogg|mov)$/i.test(name);
   };
 
+  const isAudio = (type: string | null, name: string) => {
+    return (
+      type?.startsWith("audio/") || /\.(mp3|wav|flac|aac|ogg|m4a)$/i.test(name)
+    );
+  };
+
   if (!selectedFile) return null;
 
   return (
     <div className="relative flex h-full flex-col bg-neutral-900">
       <div className="flex h-10 items-center justify-between border-b border-neutral-800 bg-neutral-900 px-4 py-2">
-        <span className="text-sm font-medium text-neutral-200">
-          {selectedFile.name}
-        </span>
+        <div className="flex items-center gap-2">
+          {<FileIcon name={selectedFile.name} kind="file" size={16} />}
+          <span className="text-sm font-medium text-neutral-200">
+            {selectedFile.name}
+          </span>
+        </div>
         <button
           onClick={closeFile}
           className="rounded p-1 text-neutral-400 hover:bg-neutral-800 hover:text-neutral-200"
@@ -80,6 +95,15 @@ export const Preview: React.FC = () => {
               controls
               className="max-h-full max-w-full object-contain shadow-lg"
             />
+          ) : isAudio(fileType, selectedFile.name) ? (
+            <div className="w-full max-w-md rounded-2xl p-6">
+              <audio
+                src={contentUrl}
+                controls
+                className="w-full"
+                preload="metadata"
+              />
+            </div>
           ) : (
             <div className="flex flex-col items-center text-neutral-500">
               <span className="mb-2 text-lg">

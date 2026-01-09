@@ -123,6 +123,12 @@ export const FileEditor: React.FC = () => {
         return "xml";
       case "sql":
         return "sql";
+      case "env":
+      case "sh":
+      case "ps1":
+      case "csh":
+      case "fish":
+        return "powershell";
       default:
         return "plaintext";
     }

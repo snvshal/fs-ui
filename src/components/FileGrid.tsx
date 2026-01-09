@@ -6,16 +6,26 @@ import {
   FileText,
   Image as ImageIcon,
   Code,
-  Play,
+  Video,
+  FileAudio,
+  Terminal,
 } from "lucide-react";
 import { FileSystemEntry } from "../types/file-system";
+import clsx, { ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
 
-const FileIcon: React.FC<{ name: string; kind: "file" | "directory" }> = ({
-  name,
-  kind,
-}) => {
+export function tc(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
+
+export const FileIcon: React.FC<{
+  name: string;
+  kind: "file" | "directory";
+  size?: number;
+  className?: string;
+}> = ({ name, kind, size = 16, className }) => {
   if (kind === "directory")
-    return <Folder size={48} className="mb-2 text-blue-500" />;
+    return <Folder size={size} className={tc("text-blue-500", className)} />;
 
   // Simple extension check
   const ext = name.split(".").pop()?.toLowerCase();
@@ -26,26 +36,60 @@ const FileIcon: React.FC<{ name: string; kind: "file" | "directory" }> = ({
     case "jpeg":
     case "svg":
     case "webp":
-      return <ImageIcon size={48} className="mb-2 text-purple-400" />;
+      return (
+        <ImageIcon size={size} className={tc("text-purple-400", className)} />
+      );
     case "mp4":
     case "mov":
     case "avi":
     case "mkv":
     case "webm":
-      return <Play size={48} className="mb-2 text-green-400" />;
+      return <Video size={size} className={tc("text-green-400", className)} />;
+    case "mp3":
+    case "wav":
+    case "flac":
+    case "aac":
+    case "ogg":
+    case "m4a":
+      return (
+        <FileAudio size={size} className={tc("text-blue-400", className)} />
+      );
     case "json":
     case "ts":
     case "tsx":
     case "js":
+    case "mjs":
+    case "cjs":
     case "jsx":
     case "css":
     case "html":
-      return <Code size={48} className="mb-2 text-yellow-400" />;
+    case "py":
+    case "java":
+    case "cpp":
+    case "c":
+    case "go":
+    case "rs":
+    case "rb":
+    case "php":
+    case "swift":
+    case "kt":
+    case "rs":
+      return <Code size={size} className={tc("text-yellow-400", className)} />;
     case "md":
     case "txt":
-      return <FileText size={48} className="mb-2 text-neutral-400" />;
+      return (
+        <FileText size={size} className={tc("text-neutral-400", className)} />
+      );
+    case "env":
+    case "sh":
+    case "ps1":
+    case "csh":
+    case "fish":
+      return (
+        <Terminal size={size} className={tc("text-indigo-400", className)} />
+      );
     default:
-      return <File size={48} className="mb-2 text-neutral-500" />;
+      return <File size={size} className={tc("text-neutral-500", className)} />;
   }
 };
 
@@ -77,7 +121,12 @@ export const FileGrid: React.FC = () => {
           className="group flex cursor-pointer flex-col items-center rounded-lg p-4 text-center transition-colors hover:bg-neutral-800"
         >
           <div className="transform transition-transform duration-200 group-hover:scale-110">
-            <FileIcon name={entry.name} kind={entry.kind} />
+            <FileIcon
+              name={entry.name}
+              kind={entry.kind}
+              size={48}
+              className="mb-2"
+            />
           </div>
           <span className="w-full truncate text-sm text-neutral-300 group-hover:text-white">
             {entry.name}

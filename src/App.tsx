@@ -44,16 +44,28 @@ const MainView = () => {
       // For now, assume everything is text unless image
       const ext = selectedFile.name.split(".").pop()?.toLowerCase();
       const previewExts = [
+        // Images
         "png",
         "jpg",
         "jpeg",
         "gif",
         "svg",
         "webp",
+        "bmp",
+        "ico",
+        // Videos
         "mp4",
         "webm",
         "ogg",
         "mov",
+        "avi",
+        "mkv",
+        // Audio
+        "mp3",
+        "wav",
+        "flac",
+        "m4a",
+        "aac",
       ];
 
       if (ext && previewExts.includes(ext)) {
