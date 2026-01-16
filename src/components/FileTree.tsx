@@ -1,6 +1,6 @@
 import React from "react";
 import { useFileSystem } from "../hooks/useFileSystem";
-import { Folder, ChevronRight, ChevronDown } from "lucide-react";
+import { ChevronRight, ChevronDown, FolderOpen } from "lucide-react";
 import { FileSystemEntry } from "../types/file-system";
 import clsx from "clsx";
 import { FileIcon } from "./FileGrid";
@@ -64,7 +64,7 @@ const FileTreeItem: React.FC<{
   }, [isCreatingChild, isOpen]);
 
   return (
-    <div>
+    <>
       <div
         className={clsx(
           "group flex cursor-pointer select-none items-center px-2 py-1 text-sm",
@@ -81,8 +81,8 @@ const FileTreeItem: React.FC<{
           {!isDirectory && <div className="w-[14px]" />}
         </span>
         <span className="mr-2 text-blue-400">
-          {isDirectory ? (
-            <Folder size={16} />
+          {isDirectory && isOpen ? (
+            <FolderOpen size={16} className="text-neutral-400" />
           ) : (
             <FileIcon
               name={entry.name}
@@ -117,7 +117,7 @@ const FileTreeItem: React.FC<{
           />
         </>
       )}
-    </div>
+    </>
   );
 };
 
@@ -187,7 +187,7 @@ export const FileTree: React.FC = () => {
 
   return (
     <div
-      className="flex h-full flex-col"
+      className="flex flex-col"
       onClick={() => setSelectedDirectory(null)} // Clicking empty space selects root
     >
       {isCreatingAtRoot && (

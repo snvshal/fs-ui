@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { get, set } from "idb-keyval";
+import React, { useState, useCallback } from "react";
 import { FileSystemEntry, FileSystemState } from "../types/file-system";
 import { getDirectoryEntries, verifyPermission } from "../utils/file-system";
 import { FileSystemContext } from "../hooks/useFileSystem";
@@ -18,27 +17,10 @@ export const FileSystemProvider: React.FC<{ children: React.ReactNode }> = ({
     error: null,
   });
 
-  // Load persisted handle on mount
-  useEffect(() => {
-    const loadPersistedHandle = async () => {
-      try {
-        const rootHandle = await get<FileSystemDirectoryHandle>("rootHandle");
-        if (rootHandle) {
-          setState((prev) => ({ ...prev, rootHandle }));
-        }
-      } catch (err) {
-        console.error("Failed to load persistence handle", err);
-      }
-    };
-    loadPersistedHandle();
-  }, []);
-
   const openDirectory = useCallback(async () => {
     try {
       setState((prev) => ({ ...prev, isLoading: true, error: null }));
       const handle = await window.showDirectoryPicker();
-
-      await set("rootHandle", handle);
 
       const entries = await getDirectoryEntries(handle, []);
       setState({

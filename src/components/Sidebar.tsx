@@ -44,7 +44,7 @@ export const Sidebar: React.FC = () => {
             <span title={rootHandle.name}>{rootHandle.name}</span>
             <ActionToolbar />
           </div>
-          <div className="sidebar flex-1 overflow-y-auto pb-10">
+          <div className="sidebar flex-1 pb-10">
             <FileTree />
           </div>
         </>

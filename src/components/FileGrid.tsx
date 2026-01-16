@@ -5,10 +5,10 @@ import {
   Folder,
   FileText,
   Image as ImageIcon,
-  Code,
   Video,
   FileAudio,
   Terminal,
+  FileCode,
 } from "lucide-react";
 import { FileSystemEntry } from "../types/file-system";
 import { tc } from "../utils/tc";
@@ -39,7 +39,7 @@ export const FileIcon: React.FC<{
     case "avi":
     case "mkv":
     case "webm":
-      return <Video size={size} className={tc("text-green-400", className)} />;
+      return <Video size={size} className={tc("text-red-400", className)} />;
     case "mp3":
     case "wav":
     case "flac":
@@ -68,7 +68,9 @@ export const FileIcon: React.FC<{
     case "php":
     case "swift":
     case "kt":
-      return <Code size={size} className={tc("text-yellow-400", className)} />;
+      return (
+        <FileCode size={size} className={tc("text-amber-400", className)} />
+      );
     case "md":
     case "txt":
       return (

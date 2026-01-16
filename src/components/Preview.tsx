@@ -96,7 +96,7 @@ export const Preview: React.FC = () => {
               className="max-h-full max-w-full object-contain shadow-lg"
             />
           ) : isAudio(fileType, selectedFile.name) ? (
-            <div className="w-full max-w-md rounded-2xl p-6">
+            <div className="w-full max-w-xl rounded-2xl p-6">
               <audio
                 src={contentUrl}
                 controls
